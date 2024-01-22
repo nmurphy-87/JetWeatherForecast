@@ -22,6 +22,7 @@ import com.niallmurph.jetweatherforecast.data.DataOrException
 import com.niallmurph.jetweatherforecast.model.Weather
 import com.niallmurph.jetweatherforecast.model.WeatherItem
 import com.niallmurph.jetweatherforecast.utils.Constants.BASE_IMAGE_URL
+import com.niallmurph.jetweatherforecast.utils.formatDateTime
 import com.niallmurph.jetweatherforecast.utils.formatDecimals
 import com.niallmurph.jetweatherforecast.utils.formateDate
 import com.niallmurph.jetweatherforecast.widgets.WeatherAppBar
@@ -105,6 +106,41 @@ fun MainContent(data: Weather) {
             }
         }
         HumidityWindPressureRow(data = weatherItem)
+        Divider()
+        SunriseSunsetRow(data = weatherItem)
+    }
+}
+
+@Composable
+fun SunriseSunsetRow(data: WeatherItem) {
+
+    Row(
+        modifier = Modifier
+            .padding(12.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            modifier = Modifier.padding(4.dp)
+        ){
+            Icon(
+                painter = painterResource(id = R.drawable.sunrise),
+                contentDescription = "Sunrise Icon",
+                modifier = Modifier.size(20.dp)
+            )
+            Text(text = formatDateTime(data.sunrise), style = MaterialTheme.typography.caption)
+        }
+        Row(
+            modifier = Modifier.padding(4.dp)
+        ){
+            Text(text = formatDateTime(data.sunset), style = MaterialTheme.typography.caption)
+            Icon(
+                painter = painterResource(id = R.drawable.sunset),
+                contentDescription = "Sunset Icon",
+                modifier = Modifier.size(20.dp)
+            )
+        }
     }
 }
 
@@ -116,23 +152,35 @@ fun HumidityWindPressureRow(data: WeatherItem) {
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
-    ){
+    ) {
         Row(
             modifier = Modifier.padding(4.dp)
-        ){
-            Icon(painter = painterResource(id = R.drawable.humidity), contentDescription = "Humidity Icon", modifier = Modifier.size(20.dp))
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.humidity),
+                contentDescription = "Humidity Icon",
+                modifier = Modifier.size(20.dp)
+            )
             Text(text = "${data.humidity} %", style = MaterialTheme.typography.caption)
         }
         Row(
             modifier = Modifier.padding(4.dp)
-        ){
-            Icon(painter = painterResource(id = R.drawable.pressure), contentDescription = "Pressure Icon", modifier = Modifier.size(20.dp))
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.pressure),
+                contentDescription = "Pressure Icon",
+                modifier = Modifier.size(20.dp)
+            )
             Text(text = "${data.pressure} psi", style = MaterialTheme.typography.caption)
         }
         Row(
             modifier = Modifier.padding(4.dp)
-        ){
-            Icon(painter = painterResource(id = R.drawable.wind), contentDescription = "Wind Icon", modifier = Modifier.size(20.dp))
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.wind),
+                contentDescription = "Wind Icon",
+                modifier = Modifier.size(20.dp)
+            )
             Text(text = "${data.speed} mph", style = MaterialTheme.typography.caption)
         }
     }
