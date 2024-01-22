@@ -10,14 +10,17 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.niallmurph.jetweatherforecast.R
 import com.niallmurph.jetweatherforecast.data.DataOrException
 import com.niallmurph.jetweatherforecast.model.Weather
+import com.niallmurph.jetweatherforecast.model.WeatherItem
 import com.niallmurph.jetweatherforecast.utils.Constants.BASE_IMAGE_URL
 import com.niallmurph.jetweatherforecast.utils.formatDecimals
 import com.niallmurph.jetweatherforecast.utils.formateDate
@@ -99,8 +102,38 @@ fun MainContent(data: Weather) {
                     fontWeight = FontWeight.ExtraBold
                 )
                 Text(text = weatherItem.weather[0].description, fontStyle = FontStyle.Italic)
-
             }
+        }
+        HumidityWindPressureRow(data = weatherItem)
+    }
+}
+
+@Composable
+fun HumidityWindPressureRow(data: WeatherItem) {
+    Row(
+        modifier = Modifier
+            .padding(12.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ){
+        Row(
+            modifier = Modifier.padding(4.dp)
+        ){
+            Icon(painter = painterResource(id = R.drawable.humidity), contentDescription = "Humidity Icon", modifier = Modifier.size(20.dp))
+            Text(text = "${data.humidity} %", style = MaterialTheme.typography.caption)
+        }
+        Row(
+            modifier = Modifier.padding(4.dp)
+        ){
+            Icon(painter = painterResource(id = R.drawable.pressure), contentDescription = "Pressure Icon", modifier = Modifier.size(20.dp))
+            Text(text = "${data.pressure} psi", style = MaterialTheme.typography.caption)
+        }
+        Row(
+            modifier = Modifier.padding(4.dp)
+        ){
+            Icon(painter = painterResource(id = R.drawable.wind), contentDescription = "Wind Icon", modifier = Modifier.size(20.dp))
+            Text(text = "${data.speed} mph", style = MaterialTheme.typography.caption)
         }
     }
 }
@@ -113,3 +146,5 @@ fun WeatherStateImage(imageUrl: String) {
         modifier = Modifier.size(96.dp)
     )
 }
+
+
