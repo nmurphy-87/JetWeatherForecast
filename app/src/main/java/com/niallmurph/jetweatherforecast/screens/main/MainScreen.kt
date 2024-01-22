@@ -10,7 +10,6 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -20,6 +19,8 @@ import coil.compose.rememberImagePainter
 import com.niallmurph.jetweatherforecast.data.DataOrException
 import com.niallmurph.jetweatherforecast.model.Weather
 import com.niallmurph.jetweatherforecast.utils.Constants.BASE_IMAGE_URL
+import com.niallmurph.jetweatherforecast.utils.formatDecimals
+import com.niallmurph.jetweatherforecast.utils.formateDate
 import com.niallmurph.jetweatherforecast.widgets.WeatherAppBar
 
 @Composable
@@ -61,6 +62,7 @@ fun MainScaffold(weather: Weather, navController: NavController) {
 fun MainContent(data: Weather) {
 
     val imageUrl = BASE_IMAGE_URL + "${data.list[0].weather[0].icon}.png"
+    val weatherItem = data.list[0]
 
     Column(
         modifier = Modifier
@@ -70,7 +72,7 @@ fun MainContent(data: Weather) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Jan 22",
+            text = formateDate(weatherItem.dt),
             style = MaterialTheme.typography.caption,
             color = MaterialTheme.colors.onSecondary,
             fontWeight = FontWeight.SemiBold,
@@ -92,11 +94,11 @@ fun MainContent(data: Weather) {
                 //Image
                 WeatherStateImage(imageUrl = imageUrl)
                 Text(
-                    text = "24",
+                    text = formatDecimals(weatherItem.temp.day) + "º",
                     style = MaterialTheme.typography.h4,
                     fontWeight = FontWeight.ExtraBold
                 )
-                Text(text = "Rain", fontStyle = FontStyle.Italic)
+                Text(text = weatherItem.weather[0].description, fontStyle = FontStyle.Italic)
 
             }
         }
