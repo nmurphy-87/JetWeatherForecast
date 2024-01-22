@@ -1,6 +1,6 @@
 package com.niallmurph.jetweatherforecast.network
 
-import com.niallmurph.jetweatherforecast.model.WeatherObject
+import com.niallmurph.jetweatherforecast.model.Weather
 import com.niallmurph.jetweatherforecast.utils.Constants.API_KEY
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -13,5 +13,5 @@ interface WeatherAPI {
         @Query("q") query: String,
         @Query("units") units : String = "imperial",
         @Query("appid") appid : String = API_KEY
-    ): WeatherObject
+    ): Weather
 }
