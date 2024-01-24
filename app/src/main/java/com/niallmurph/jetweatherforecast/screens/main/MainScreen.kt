@@ -1,6 +1,7 @@
 package com.niallmurph.jetweatherforecast.screens.main
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,18 +21,21 @@ import androidx.navigation.NavController
 import com.niallmurph.jetweatherforecast.data.DataOrException
 import com.niallmurph.jetweatherforecast.model.Weather
 import com.niallmurph.jetweatherforecast.model.WeatherItem
+import com.niallmurph.jetweatherforecast.navigation.WeatherScreens
 import com.niallmurph.jetweatherforecast.utils.Constants.BASE_IMAGE_URL
 import com.niallmurph.jetweatherforecast.utils.formatDecimals
 import com.niallmurph.jetweatherforecast.utils.formateDate
 import com.niallmurph.jetweatherforecast.widgets.*
 
 @Composable
-fun MainScreen(navController: NavController, viewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(navController: NavController, viewModel: MainViewModel = hiltViewModel(), city : String?) {
+
+    Log.d("Main Screen", "Message : $city")
 
     val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
         initialValue = DataOrException(loading = true)
     ) {
-        value = viewModel.getWeatherData(city = "dublin")
+        value = viewModel.getWeatherData(city = city.toString())
     }.value
 
     if (weatherData.loading == true) {
@@ -50,6 +54,9 @@ fun MainScaffold(weather: Weather, navController: NavController) {
             WeatherAppBar(
                 title = "${weather.city.name}, ${weather.city.country}",
                 navController = navController,
+                onAddActionClicked = {
+                     navController.navigate(WeatherScreens.SearchScreen.name)
+                },
                 elevation = 4.dp
             ) {
             }
