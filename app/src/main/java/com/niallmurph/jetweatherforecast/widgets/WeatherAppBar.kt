@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.niallmurph.jetweatherforecast.navigation.WeatherScreens
 
 @Preview
 @Composable
@@ -118,7 +119,13 @@ fun ShowSettingsDropDown(
                         text = item,
                         modifier = Modifier
                             .clickable {
-
+                                navController.navigate(
+                                    when(item) {
+                                        "About" -> WeatherScreens.AboutScreen.name
+                                        "Favourites" -> WeatherScreens.FavouriteScreen.name
+                                        else -> WeatherScreens.SettingsScreen.name
+                                    }
+                                )
                             },
                         fontWeight = FontWeight.W300
                     )
