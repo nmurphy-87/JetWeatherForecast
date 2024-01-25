@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
@@ -17,8 +18,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.niallmurph.jetweatherforecast.model.entities.Favourite
 import com.niallmurph.jetweatherforecast.navigation.WeatherScreens
+import com.niallmurph.jetweatherforecast.screens.favourite.FavouriteViewModel
 
 @Preview
 @Composable
@@ -28,6 +32,7 @@ fun WeatherAppBar(
     onMainScreen: Boolean = true,
     elevation: Dp = 0.dp,
     navController: NavController,
+    favouriteViewModel: FavouriteViewModel = hiltViewModel(),
     onAddActionClicked: () -> Unit = {},
     onButtonClicked: () -> Unit = {}
 ) {
@@ -67,6 +72,26 @@ fun WeatherAppBar(
                         onButtonClicked.invoke()
                     },
                     tint = MaterialTheme.colors.onSecondary,
+                )
+            }
+            if (onMainScreen) {
+                Icon(
+                    imageVector = Icons.Default.Favorite, contentDescription = "Favourite Icon",
+                    modifier = Modifier
+                        .padding(start = 6.dp)
+                        .scale(0.9f)
+                        .clickable {
+                            val dataList = title
+                                .split(", ")
+                            favouriteViewModel
+                                .insertFavourite(
+                                    Favourite(
+                                        city = dataList[0],
+                                        country = dataList[1]
+                                    )
+                                )
+                        },
+                    tint = Color.Red,
                 )
             }
         },
@@ -120,7 +145,7 @@ fun ShowSettingsDropDown(
                         modifier = Modifier
                             .clickable {
                                 navController.navigate(
-                                    when(item) {
+                                    when (item) {
                                         "About" -> WeatherScreens.AboutScreen.name
                                         "Favourites" -> WeatherScreens.FavouriteScreen.name
                                         else -> WeatherScreens.SettingsScreen.name
