@@ -1,5 +1,7 @@
 package com.niallmurph.jetweatherforecast.widgets
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,6 +45,9 @@ fun WeatherAppBar(
     if (showDialog.value) {
         ShowSettingsDropDown(showDialog = showDialog, navController = navController)
     }
+
+    val showIt = remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     TopAppBar(
         title = {
@@ -96,16 +102,29 @@ fun WeatherAppBar(
                                             city = dataList[0],
                                             country = dataList[1]
                                         )
-                                    )
+                                    ).run {
+                                        showIt.value = true
+                                    }
                             },
                         tint = Color.Red,
                     )
+                } else {
+                    showIt.value = false
                 }
+
+                ShowToast(context = context, showIt)
             }
         },
         backgroundColor = Color.Transparent,
         elevation = elevation
     )
+}
+
+@Composable
+fun ShowToast(context: Context, showIt: MutableState<Boolean>) {
+    if(showIt.value) {
+        Toast.makeText(context, "Added to Favourites", Toast.LENGTH_SHORT).show()
+    }
 }
 
 @Composable
