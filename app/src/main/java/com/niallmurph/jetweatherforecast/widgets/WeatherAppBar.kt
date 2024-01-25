@@ -75,24 +75,32 @@ fun WeatherAppBar(
                 )
             }
             if (onMainScreen) {
-                Icon(
-                    imageVector = Icons.Default.Favorite, contentDescription = "Favourite Icon",
-                    modifier = Modifier
-                        .padding(start = 6.dp)
-                        .scale(0.9f)
-                        .clickable {
-                            val dataList = title
-                                .split(", ")
-                            favouriteViewModel
-                                .insertFavourite(
-                                    Favourite(
-                                        city = dataList[0],
-                                        country = dataList[1]
+
+                val isAlreadyFavourite = favouriteViewModel
+                    .favList.collectAsState().value.filter { item ->
+                        (item.city == title.split(",")[0])
+                    }
+
+                if(isAlreadyFavourite.isNullOrEmpty()){
+                    Icon(
+                        imageVector = Icons.Default.Favorite, contentDescription = "Favourite Icon",
+                        modifier = Modifier
+                            .padding(start = 6.dp)
+                            .scale(0.9f)
+                            .clickable {
+                                val dataList = title
+                                    .split(", ")
+                                favouriteViewModel
+                                    .insertFavourite(
+                                        Favourite(
+                                            city = dataList[0],
+                                            country = dataList[1]
+                                        )
                                     )
-                                )
-                        },
-                    tint = Color.Red,
-                )
+                            },
+                        tint = Color.Red,
+                    )
+                }
             }
         },
         backgroundColor = Color.Transparent,
