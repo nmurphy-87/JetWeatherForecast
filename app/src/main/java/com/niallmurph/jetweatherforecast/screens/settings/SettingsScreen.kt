@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,8 +30,10 @@ fun SettingsScreen(
 ) {
 
     var unitToggleState = remember { mutableStateOf(false) }
-    var measurementUnits = listOf("Imperial (ºF)", "Celsius (ºC)")
-    var choiceState = remember { mutableStateOf("") }
+    var measurementUnits = listOf("Imperial (ºF)", "Metric (ºC)")
+    val choiceFromDb = viewModel.unitList.collectAsState().value
+    val defaultChoice = if(choiceFromDb.isNullOrEmpty()) measurementUnits[0] else choiceFromDb[0]
+    var choiceState = remember { mutableStateOf(defaultChoice) }
 
     Scaffold(
         topBar = {
