@@ -32,7 +32,7 @@ fun SettingsScreen(
     var unitToggleState = remember { mutableStateOf(false) }
     var measurementUnits = listOf("Imperial (ºF)", "Metric (ºC)")
     val choiceFromDb = viewModel.unitList.collectAsState().value
-    val defaultChoice = if(choiceFromDb.isNullOrEmpty()) measurementUnits[0] else choiceFromDb[0]
+    val defaultChoice = if(choiceFromDb.isNullOrEmpty()) measurementUnits[0] else choiceFromDb[0].unit
     var choiceState = remember { mutableStateOf(defaultChoice) }
 
     Scaffold(
@@ -42,7 +42,9 @@ fun SettingsScreen(
                 icon = Icons.Default.ArrowBack,
                 onMainScreen = false,
                 navController = navController
-            )
+            ){
+                navController.popBackStack()
+            }
         }
     ) {
         Surface(
