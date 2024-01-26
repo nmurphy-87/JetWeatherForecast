@@ -8,12 +8,14 @@ import com.niallmurph.jetweatherforecast.repository.WeatherDbRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import com.niallmurph.jetweatherforecast.model.entities.Unit
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
+@HiltViewModel
 class SettingsViewModel @Inject constructor(private val repository: WeatherDbRepository) :
     ViewModel() {
 

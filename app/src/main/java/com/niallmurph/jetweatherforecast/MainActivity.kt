@@ -26,6 +26,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+//TODO : INVESTIGATE WHY THE OPENWEATHERAPI IS SHOWING CELSIUS TEMPS IN THE HUNDREDS
+
 @Composable
 fun WeatherApp(){
     JetWeatherForecastTheme {
